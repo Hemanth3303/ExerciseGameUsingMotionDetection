@@ -9,11 +9,13 @@
 
 #include "Game.hpp"
 
+#include <memory>
+
 int main(int argc, char* argv[]) {
 
-	Game game(960, 540, "Exercise Game Using Motion Detection");
+	std::unique_ptr<Game> game = std::make_unique<Game>(960, 540, "Exercise Game Using Motion Detection");
 
-	game.run();
+	game->run();
 
 	return 0;
 }

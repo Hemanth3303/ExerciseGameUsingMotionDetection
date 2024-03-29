@@ -1,9 +1,13 @@
 #pragma once
 
+#include "GameObject.hpp"
+#include "Player.hpp"
+
 #include <raylib.h>
 
 #include <cstdint>
 #include <string>
+#include <memory>
 
 class Game {
 public:
@@ -12,6 +16,13 @@ public:
 
 	void run();
 private:
+	void init();
+	void deinit();
+private:
 	int32_t m_Width, m_Height;
 	std::string m_Title;
+	float m_DeltaTime = 0.0f;
+	std::shared_ptr<Camera3D> m_Camera;
+	std::shared_ptr<Player> m_Player;
+	std::shared_ptr<GameObject> m_Platform;
 };
