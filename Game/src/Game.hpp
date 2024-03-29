@@ -25,4 +25,5 @@ private:
 	std::shared_ptr<Camera3D> m_Camera;
 	std::shared_ptr<Player> m_Player;
 	std::shared_ptr<GameObject> m_Platform;
+	int64_t m_PlayerScore = 0;
 };

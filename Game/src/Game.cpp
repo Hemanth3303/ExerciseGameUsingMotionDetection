@@ -35,20 +35,18 @@ void Game::run() {
 }
 
 void Game::init() {
-	SetConfigFlags(FLAG_VSYNC_HINT);
+	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
 	InitWindow(m_Width, m_Height, m_Title.c_str());
 
 	m_Camera = std::make_shared<Camera3D>();
 	m_Player = std::make_shared<Player>();
 	m_Platform = std::make_shared<GameObject>(Vector3(0.0f, 0.0f, 0.0), Vector3(100.f, 1.0f, 100.0f), Color(118, 85, 43, 255));
 
-	m_Camera->position = { -13.0f, 10.0f, 0.0f };
+	m_Camera->position = { 0.0f, 10.0f, 13.0f };
 	m_Camera->target = { m_Player->getPosition().x, m_Player->getPosition().y + 5.0f, m_Player->getPosition().z };
 	m_Camera->fovy = 60.0f;
 	m_Camera->projection = CAMERA_PERSPECTIVE;
 	m_Camera->up = { 0.0f, 1.0f, 0.0f };
-
-	//DisableCursor();
 }
 
 void Game::deinit() {
