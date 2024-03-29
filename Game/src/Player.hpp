@@ -16,4 +16,6 @@ public:
 	inline const Color& getColor() const { return m_GameObject.color; }
 private:
 	GameObject m_GameObject;
+	const float JUMP_SPEED = 70.0f;
+	const float MOVE_SPEED = 30.0f;
 };

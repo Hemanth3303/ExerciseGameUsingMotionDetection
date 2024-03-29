@@ -48,7 +48,7 @@ void Game::init() {
 	m_Camera->projection = CAMERA_PERSPECTIVE;
 	m_Camera->up = { 0.0f, 1.0f, 0.0f };
 
-	DisableCursor();
+	//DisableCursor();
 }
 
 void Game::deinit() {
