@@ -24,6 +24,6 @@ private:
 	float m_DeltaTime = 0.0f;
 	std::shared_ptr<Camera3D> m_Camera;
 	std::shared_ptr<Player> m_Player;
-	std::shared_ptr<GameObject> m_Platform;
+	std::shared_ptr<GameObject> m_LeftLane, m_CenterLane, m_RightLane;
 	int64_t m_PlayerScore = 0;
 };
