@@ -23,4 +23,4 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/$<0:
 find_package(OpenCV CONFIG REQUIRED)
 find_package(raylib CONFIG REQUIRED)
 
-add_subdirectory("Game")
+add_subdirectory("Application")

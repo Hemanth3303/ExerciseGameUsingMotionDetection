@@ -1,7 +1,7 @@
 #pragma once
 
-#include "GameObject.hpp"
-#include "Player.hpp"
+#include "Game/GameObject.hpp"
+#include "Game/Player.hpp"
 
 #include <raylib.h>
 
@@ -9,10 +9,10 @@
 #include <string>
 #include <memory>
 
-class Game {
+class Application {
 public:
-	Game(int32_t width, int32_t height, const std::string& title);
-	~Game();
+	Application(int32_t width, int32_t height, const std::string& title);
+	~Application();
 
 	void run();
 private:

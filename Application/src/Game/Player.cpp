@@ -1,10 +1,5 @@
 #include "Player.hpp"
-#include "Game.hpp"
-#include "Constants.hpp"
-
-#include <cmath>
-#include <algorithm>
-#include <iostream>
+#include "../Constants.hpp"
 
 Player::Player() 
 	: m_GameObject({ 0.0f, GROUND_POS, 0.0f },{2.0f, 5.0f, 1.0f}, RED) {
@@ -34,5 +29,4 @@ void Player::update(const float deltaTime) {
 	if (IsKeyPressed(KEY_D) && m_GameObject.position.x < rightLanePos) {
 		m_GameObject.position.x += 10.0f;
 	}
-	
 }

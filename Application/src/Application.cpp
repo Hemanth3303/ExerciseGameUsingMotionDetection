@@ -1,17 +1,17 @@
-#include "Game.hpp"
+#include "Application.hpp"
 #include "Constants.hpp"
 
-Game::Game(int32_t width, int32_t height, const std::string& title) 
+Application::Application(int32_t width, int32_t height, const std::string& title) 
 	: m_Width(width), m_Height(height), m_Title(title) {
 
 	init();
 }
 
-Game::~Game() {
+Application::~Application() {
 	deinit();
 }
 
-void Game::run() {
+void Application::run() {
 	while (!WindowShouldClose()) {
 		// update
 		m_DeltaTime = GetFrameTime();
@@ -35,7 +35,7 @@ void Game::run() {
 	}
 }
 
-void Game::init() {
+void Application::init() {
 	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
 	InitWindow(m_Width, m_Height, m_Title.c_str());
 
@@ -52,6 +52,6 @@ void Game::init() {
 	m_Camera->up = { 0.0f, 1.0f, 0.0f };
 }
 
-void Game::deinit() {
+void Application::deinit() {
 	CloseWindow();
 }

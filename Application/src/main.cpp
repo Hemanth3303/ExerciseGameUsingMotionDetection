@@ -7,14 +7,14 @@
 //#endif
 
 
-#include "Game.hpp"
+#include "Application.hpp"
 #include "Constants.hpp"
 
 #include <memory>
 
 int main(int argc, char* argv[]) {
 
-	std::unique_ptr<Game> game = std::make_unique<Game>(winWidth, winHeight, "Exercise Game Using Motion Detection");
+	std::unique_ptr<Application> game = std::make_unique<Application>(winWidth, winHeight, "Exercise Game Using Motion Detection");
 
 	game->run();
 
