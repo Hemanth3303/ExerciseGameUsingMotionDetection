@@ -4,6 +4,7 @@
 #include "Game/Player.hpp"
 
 #include <raylib.h>
+#include <raymath.h>
 
 #include <cstdint>
 #include <string>
