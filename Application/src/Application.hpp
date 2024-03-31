@@ -2,6 +2,8 @@
 
 #include "Game/GameObject.hpp"
 #include "Game/Player.hpp"
+#include "MotionDetection/MotionDetection.hpp"
+#include "Utils.hpp"
 
 #include <raylib.h>
 #include <raymath.h>
@@ -26,5 +28,8 @@ private:
 	std::shared_ptr<Camera3D> m_Camera;
 	std::shared_ptr<Player> m_Player;
 	std::shared_ptr<GameObject> m_LeftLane, m_CenterLane, m_RightLane;
+	RenderTexture2D m_GameTexture;
+	Texture m_VideoTexture{};
 	int64_t m_PlayerScore = 0;
+	std::string m_ScoreText = "";
 };

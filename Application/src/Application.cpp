@@ -17,6 +17,7 @@ void Application::run() {
 	GameObject obstacle(Vector3(0.0f, 8.0f, -20.0f), Vector3(1.0f, 1.0f, 1.0f), VIOLET);
 
 	while (!WindowShouldClose()) {
+		MotionDetection::Run();
 		// update
 		m_DeltaTime = GetFrameTime();
 		UpdateCameraPro(m_Camera.get(), Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), 0.0f);
@@ -41,8 +42,8 @@ void Application::run() {
 
 		// TODO: Fix rendering order
 
-		// render
-		BeginDrawing();
+		// render to a texture
+		BeginTextureMode(m_GameTexture);
 		ClearBackground(Color(0, 191, 255, 255)); // skyblue color rgba
 		BeginMode3D(*m_Camera);
 
@@ -54,16 +55,35 @@ void Application::run() {
 		DrawCubeV(m_Player->getPosition(), m_Player->getSize(), m_Player->getColor());
 		
 		EndMode3D();
+
 		// 2d stuff
-		std::string scoreText = "Score: " + std::to_string(m_PlayerScore);
-		DrawText(scoreText.c_str(), 10, 10, 32, RED);
+		m_ScoreText = "Score: " + std::to_string(m_PlayerScore) + " | FPS: " + std::to_string(GetFPS());
+		DrawText(m_ScoreText.c_str(), 10, 10, 32, RED);
+		EndTextureMode();
+
+		// draw the video texture and game texture to screen
+		BeginDrawing();
+		ClearBackground(WHITE);
+		m_VideoTexture = Utils::GetRaylibTexture(MotionDetection::GetFrame());
+		DrawTexture(m_VideoTexture, 0, 0, WHITE);
+
+		DrawTextureRec(
+			m_GameTexture.texture, 
+			Rectangle(0.0f, 0.0f, static_cast<float>(gameWidth), static_cast<float>(-m_GameTexture.texture.height)), 
+			Vector2(static_cast<float>(winWidth - gameWidth), 0.0f), 
+			WHITE
+		);
+		
 		EndDrawing();
+		UnloadTexture(m_VideoTexture);
+
 	}
 }
 
 void Application::init() {
-	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
+	SetConfigFlags(FLAG_VSYNC_HINT);
 	InitWindow(m_Width, m_Height, m_Title.c_str());
+	SetTraceLogLevel(LOG_WARNING);
 
 	m_Camera = std::make_shared<Camera3D>();
 	m_Player = std::make_shared<Player>();
@@ -76,8 +96,13 @@ void Application::init() {
 	m_Camera->fovy = 60.0f;
 	m_Camera->projection = CAMERA_PERSPECTIVE;
 	m_Camera->up = { 0.0f, 1.0f, 0.0f };
+
+	m_GameTexture = LoadRenderTexture(gameWidth, winHeight);
+
+	MotionDetection::Init();
 }
 
 void Application::deinit() {
+	MotionDetection::Deinit();
 	CloseWindow();
 }
