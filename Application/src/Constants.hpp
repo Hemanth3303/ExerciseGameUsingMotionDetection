@@ -2,12 +2,12 @@
 
 #include <cstdint>
 
-inline const std::int32_t winWidth = 960;
-inline const std::int32_t winHeight = 540;
+inline constexpr std::int32_t winWidth = 1280;
+inline constexpr std::int32_t winHeight = 720;
 
-inline const std::int32_t gameWidth = 640;
-inline const std::int32_t videoWidth = winWidth-gameWidth;
+inline constexpr std::int32_t gameWidth = 720;
+inline constexpr std::int32_t videoWidth = winWidth-gameWidth;
 
-inline const float leftLanePos = -10.0f;
-inline const float centerLanePos = 0.0f;
-inline const float rightLanePos = 10.0f;
+inline constexpr float leftLanePos = -10.0f;
+inline constexpr float centerLanePos = 0.0f;
+inline constexpr float rightLanePos = 10.0f;
