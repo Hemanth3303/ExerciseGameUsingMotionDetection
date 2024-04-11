@@ -10,9 +10,6 @@ const Texture& Utils::GetRaylibTexture(const cv::Mat& opencvFrame) {
 	cv::cvtColor(opencvFrame, s_LocalFrame, cv::COLOR_BGR2RGB);
 	cv::resize(s_LocalFrame, s_LocalFrame, cv::Size(videoWidth, winHeight));
 
-	// flip the frame horizontally 
-	cv::flip(s_LocalFrame, s_LocalFrame, 1);
-
 	// create a raylib image buffer with the opencv frame
 	s_Image.data = s_LocalFrame.ptr();
 	s_Image.width = s_LocalFrame.cols;

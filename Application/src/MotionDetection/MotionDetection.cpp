@@ -4,26 +4,15 @@ cv::VideoCapture MotionDetection::s_VideoCapture(0); // 0 means default camera
 cv::Mat MotionDetection::s_Frame;
 
 cv::Mat processingFrame;
-cv::Ptr<cv::BackgroundSubtractorMOG2> backgroundSubtractor;
 cv::Mat kernel;
-cv::Mat edges;
-cv::HOGDescriptor hog;
-
-std::vector<cv::Rect> bounds;
-
-std::vector<std::vector<cv::Point>> contours;
-std::vector<cv::Vec4i> hierarchy;
+cv::Ptr<cv::BackgroundSubtractorMOG2> pbacksub;
 
 void MotionDetection::Init() {
 	if (!s_VideoCapture.isOpened()) {
 		std::cerr << "No video stream detected\n";
 	}
-	//s_VideoCapture.set(cv::CAP_PROP_FPS, 60);
-	
-	backgroundSubtractor = cv::createBackgroundSubtractorMOG2();
+	pbacksub = cv::createBackgroundSubtractorMOG2();
 	kernel = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3));
-
-	hog.setSVMDetector(cv::HOGDescriptor::getDefaultPeopleDetector());
 }
 
 void MotionDetection::Deinit() {
@@ -36,26 +25,39 @@ void MotionDetection::Run() {
 		std::cerr << "Frame is empty\n";
 	}
 
-	backgroundSubtractor->apply(s_Frame, processingFrame);
-	cv::flip(processingFrame, processingFrame, 1);
+	// flip the frame horizontally 
+	cv::flip(s_Frame, s_Frame, 1);
+
+	cv::cvtColor(s_Frame, processingFrame, cv::COLOR_BGR2GRAY);
+
+	pbacksub->apply(processingFrame, processingFrame);
 	cv::morphologyEx(processingFrame, processingFrame, cv::MORPH_OPEN, kernel);
-	
-	//cv::resize(processingFrame, processingFrame, cv::Size(640, 480));
-	//hog.detectMultiScale(processingFrame, bounds);
-	//for (size_t i = 0; i < bounds.size(); i++) {
-	//	cv::rectangle(processingFrame, bounds[i], cv::Scalar(0, 255, 255), 2);
-	//}
 
-	//cv::cvtColor(s_Frame, processingFrame, cv::COLOR_BGR2GRAY);
-	cv::Canny(processingFrame, edges, 150, 200);
+	// Find contours around the detected motion regions
+	std::vector<std::vector<cv::Point>> contours;
+	cv::findContours(processingFrame, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
-	cv::findContours(edges, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_NONE);
+	// Find the bounding box that encompasses all contours
+	cv::Rect boundingBox;
+	for (const auto& contour : contours) {
+		// Compute the bounding rectangle for the current contour
+		cv::Rect contourBoundingBox = cv::boundingRect(contour);
 
-	for (size_t i = 0; i < contours.size(); i++) {
-		if (cv::contourArea(contours[i]) > 100) {
-			cv::drawContours(processingFrame, contours, i, cv::Scalar(255, 0, 0), 3);
-		}
+		// Expand the overall bounding box to include the current contour
+		boundingBox = boundingBox | contourBoundingBox;
 	}
 
-	cv::imshow("processing frame", processingFrame);
+	cv::Point center = cv::Point(boundingBox.x + boundingBox.width / 2, boundingBox.y + boundingBox.height / 2);
+
+	// Draw the single bounding box covering the entire area with motion
+	if (!boundingBox.empty()) {
+		cv::rectangle(processingFrame, boundingBox, cv::Scalar(255, 0, 0), 2);
+		cv::rectangle(s_Frame, boundingBox, cv::Scalar(255, 0, 0), 2);
+
+		cv::circle(processingFrame, center, 10, cv::Scalar(255, 0, 0), cv::FILLED);
+		cv::circle(s_Frame, center, 10, cv::Scalar(0, 0, 255), cv::FILLED);
+	}
+
+
+	cv::imshow("processingFrame", processingFrame);
 }
