@@ -2,17 +2,17 @@
 
 cv::VideoCapture MotionDetection::s_VideoCapture(0); // 0 means default camera
 cv::Mat MotionDetection::s_Frame;
-
-cv::Mat processingFrame;
-cv::Mat kernel;
-cv::Ptr<cv::BackgroundSubtractorMOG2> pbacksub;
+cv::Mat MotionDetection::s_ProcessingFrame;
+cv::Mat MotionDetection::s_BackSubKernel;
+cv::Ptr<cv::BackgroundSubtractorMOG2> MotionDetection::s_BackgroundSubtractor;
+cv::Point MotionDetection::s_MotionCenter;
 
 void MotionDetection::Init() {
 	if (!s_VideoCapture.isOpened()) {
 		std::cerr << "No video stream detected\n";
 	}
-	pbacksub = cv::createBackgroundSubtractorMOG2();
-	kernel = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3));
+	s_BackgroundSubtractor = cv::createBackgroundSubtractorMOG2();
+	s_BackSubKernel = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3));
 }
 
 void MotionDetection::Deinit() {
@@ -28,14 +28,15 @@ void MotionDetection::Run() {
 	// flip the frame horizontally 
 	cv::flip(s_Frame, s_Frame, 1);
 
-	cv::cvtColor(s_Frame, processingFrame, cv::COLOR_BGR2GRAY);
+	cv::cvtColor(s_Frame, s_ProcessingFrame, cv::COLOR_BGR2GRAY);
+	cv::resize(s_ProcessingFrame, s_ProcessingFrame, cv::Size(videoWidth, winHeight));
 
-	pbacksub->apply(processingFrame, processingFrame);
-	cv::morphologyEx(processingFrame, processingFrame, cv::MORPH_OPEN, kernel);
+	s_BackgroundSubtractor->apply(s_ProcessingFrame, s_ProcessingFrame);
+	cv::morphologyEx(s_ProcessingFrame, s_ProcessingFrame, cv::MORPH_OPEN, s_BackSubKernel);
 
 	// Find contours around the detected motion regions
 	std::vector<std::vector<cv::Point>> contours;
-	cv::findContours(processingFrame, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+	cv::findContours(s_ProcessingFrame, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
 	// Find the bounding box that encompasses all contours
 	cv::Rect boundingBox;
@@ -47,17 +48,16 @@ void MotionDetection::Run() {
 		boundingBox = boundingBox | contourBoundingBox;
 	}
 
-	cv::Point center = cv::Point(boundingBox.x + boundingBox.width / 2, boundingBox.y + boundingBox.height / 2);
+	s_MotionCenter = cv::Point(boundingBox.x + boundingBox.width / 2, boundingBox.y + boundingBox.height / 2);
 
 	// Draw the single bounding box covering the entire area with motion
 	if (!boundingBox.empty()) {
-		cv::rectangle(processingFrame, boundingBox, cv::Scalar(255, 0, 0), 2);
+		cv::rectangle(s_ProcessingFrame, boundingBox, cv::Scalar(255, 0, 0), 2);
 		cv::rectangle(s_Frame, boundingBox, cv::Scalar(255, 0, 0), 2);
 
-		cv::circle(processingFrame, center, 10, cv::Scalar(255, 0, 0), cv::FILLED);
-		cv::circle(s_Frame, center, 10, cv::Scalar(0, 0, 255), cv::FILLED);
+		cv::circle(s_ProcessingFrame, s_MotionCenter, 10, cv::Scalar(255, 0, 0), cv::FILLED);
 	}
 
 
-	cv::imshow("processingFrame", processingFrame);
+	cv::imshow("s_ProcessingFrame", s_ProcessingFrame);
 }

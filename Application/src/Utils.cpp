@@ -20,3 +20,10 @@ const Texture& Utils::GetRaylibTexture(const cv::Mat& opencvFrame) {
 	s_Texture = LoadTextureFromImage(s_Image);
 	return s_Texture;
 }
+
+const Vector2 Utils::GetMotionCenter() {
+	return Vector2(
+		MotionDetection::GetMotionCenter().x,
+		MotionDetection::GetMotionCenter().y
+	);
+}

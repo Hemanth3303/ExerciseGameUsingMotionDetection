@@ -17,7 +17,6 @@ void Game::Init() {
 	s_RightLane = std::make_shared<GameObject>(Vector3(rightLanePos, 0.0f, 0.0), Vector3(10.f, 1.0f, 200.0f), Color(118, 85, 43, 255));
 	s_Obstacle=std::make_shared<GameObject>(Vector3(0.0f, 8.0f, -20.0f), Vector3(1.0f, 1.0f, 1.0f), VIOLET);
 
-
 	s_GameTexture = LoadRenderTexture(gameWidth, winHeight);
 
 	s_Camera->position = { 0.0f, 10.0f, 25.0f };

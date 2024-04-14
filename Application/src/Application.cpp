@@ -17,9 +17,12 @@ void Application::run() {
 
 	while (!WindowShouldClose()) {
 		MotionDetection::Run();
-		Game::Update();
-		Game::Render();
 		
+		// update
+		Game::Update();
+		m_MotionBodyCenter = Utils::GetMotionCenter();
+		// render
+		Game::Render();
 
 		// draw the video texture and game texture to screen
 		BeginDrawing();
@@ -34,6 +37,8 @@ void Application::run() {
 			Vector2(static_cast<float>(winWidth - gameWidth), 0.0f), 
 			WHITE
 		);
+
+		DrawCircleV(m_MotionBodyCenter, 10, RED);
 		
 		EndDrawing();
 		UnloadTexture(m_VideoTexture);
@@ -47,6 +52,8 @@ void Application::init() {
 
 	MotionDetection::Init();
 	Game::Init();
+
+	m_MotionBodyCenter = Vector2(videoWidth / 2, winHeight / 2);
 }
 
 void Application::deinit() {
