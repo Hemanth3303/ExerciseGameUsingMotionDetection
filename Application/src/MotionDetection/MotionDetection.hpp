@@ -19,4 +19,6 @@ private:
 	static cv::Mat s_BackSubKernel;
 	static cv::Ptr<cv::BackgroundSubtractorMOG2> s_BackgroundSubtractor;
 	static cv::Point s_MotionCenter;
+	static std::vector<std::vector<cv::Point>> s_Contours;
+	static cv::Rect s_BoundingBox;
 };
