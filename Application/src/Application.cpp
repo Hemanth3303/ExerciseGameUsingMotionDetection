@@ -38,7 +38,9 @@ void Application::run() {
 			WHITE
 		);
 
-		DrawCircleV(m_MotionBodyCenter, 10, RED);
+		DrawLine(videoWidth / 2, winHeight / 2, m_MotionBodyCenter.x, m_MotionBodyCenter.y, GREEN);
+		DrawCircle(videoWidth / 2, winHeight / 2, 10, RED);
+		DrawCircleV(m_MotionBodyCenter, 10, BLUE);
 		
 		EndDrawing();
 		UnloadTexture(m_VideoTexture);

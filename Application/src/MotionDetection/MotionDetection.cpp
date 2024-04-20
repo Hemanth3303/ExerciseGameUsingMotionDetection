@@ -31,7 +31,6 @@ void MotionDetection::Run() {
 	cv::flip(s_Frame, s_Frame, 1);
 
 	cv::cvtColor(s_Frame, s_ProcessingFrame, cv::COLOR_BGR2GRAY);
-	cv::resize(s_ProcessingFrame, s_ProcessingFrame, cv::Size(videoWidth, winHeight));
 
 	s_BackgroundSubtractor->apply(s_ProcessingFrame, s_ProcessingFrame);
 	cv::morphologyEx(s_ProcessingFrame, s_ProcessingFrame, cv::MORPH_OPEN, s_BackSubKernel);

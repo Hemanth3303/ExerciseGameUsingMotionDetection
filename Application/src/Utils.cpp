@@ -22,8 +22,14 @@ const Texture& Utils::GetRaylibTexture(const cv::Mat& opencvFrame) {
 }
 
 const Vector2 Utils::GetMotionCenter() {
+	if (!MotionDetection::GetMotionCenter().x && !MotionDetection::GetMotionCenter().y) { 
+		return Vector2(videoWidth / 2, winHeight / 2);
+	}
+
+	// mapping from processing frame size to video size on screen
+	cv::Size sizeOfFrame = MotionDetection::GetProcessingFrameSize();
 	return Vector2(
-		MotionDetection::GetMotionCenter().x,
-		MotionDetection::GetMotionCenter().y
+		MotionDetection::GetMotionCenter().x * videoWidth / sizeOfFrame.width,
+		MotionDetection::GetMotionCenter().y * winHeight / sizeOfFrame.height
 	);
 }
