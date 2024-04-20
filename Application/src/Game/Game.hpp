@@ -25,7 +25,7 @@ private:
 	static std::shared_ptr<Camera3D> s_Camera;
 	static std::shared_ptr<Player> s_Player;
 	static std::shared_ptr<GameObject> s_LeftLane, s_CenterLane, s_RightLane;
-	static std::shared_ptr<GameObject> s_Obstacle;
+	static std::shared_ptr<GameObject> s_Coin;
 	static RenderTexture2D s_GameTexture;
 	static int64_t s_PlayerScore;
 	static std::string s_ScoreText;
