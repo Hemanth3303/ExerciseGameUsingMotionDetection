@@ -12,14 +12,14 @@ std::string Game::s_ScoreText = "";
 void Game::Init() {
 	s_Camera = std::make_shared<Camera3D>();
 	s_Player = std::make_shared<Player>();
-	s_LeftLane = std::make_shared<GameObject>(Vector3(leftLanePos, 0.0f, 0.0), Vector3(10.f, 1.0f, 200.0f), Color(118, 85, 43, 255));
-	s_CenterLane = std::make_shared<GameObject>(Vector3(centerLanePos, 0.0f, 0.0), Vector3(10.f, 1.0f, 200.0f), Color(182, 159, 102, 255));
-	s_RightLane = std::make_shared<GameObject>(Vector3(rightLanePos, 0.0f, 0.0), Vector3(10.f, 1.0f, 200.0f), Color(118, 85, 43, 255));
-	s_Coin=std::make_shared<GameObject>(Vector3(0.0f, 8.0f, -20.0f), Vector3(0.5f, 0.5f, 0.5f), GOLD);
+	s_LeftLane = std::make_shared<GameObject>(Vector3(leftLanePos, 0.0f, 0.0), Vector3(10.f, 1.0f, 300.0f), Color(118, 85, 43, 255));
+	s_CenterLane = std::make_shared<GameObject>(Vector3(centerLanePos, 0.0f, 0.0), Vector3(10.f, 1.0f, 300.0f), Color(182, 159, 102, 255));
+	s_RightLane = std::make_shared<GameObject>(Vector3(rightLanePos, 0.0f, 0.0), Vector3(10.f, 1.0f, 300.0f), Color(118, 85, 43, 255));
+	s_Coin=std::make_shared<GameObject>(Vector3(0.0f, 12.0f, -20.0f), Vector3(0.5f, 0.5f, 0.5f), GOLD);
 
 	s_GameTexture = LoadRenderTexture(gameWidth, winHeight);
 
-	s_Camera->position = { 0.0f, 10.0f, 25.0f };
+	s_Camera->position = { 0.0f, 13.0f, 20.0f };
 	s_Camera->target = { s_Player->getPosition().x, s_Player->getPosition().y + 5.0f, s_Player->getPosition().z };
 	s_Camera->fovy = 60.0f;
 	s_Camera->projection = CAMERA_PERSPECTIVE;
@@ -35,21 +35,27 @@ void Game::Update() {
 	UpdateCameraPro(s_Camera.get(), Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), 0.0f);
 	s_Player->update(s_DeltaTime);
 
-	float distance = Vector3Distance(s_Coin->position, s_Camera->position);
-	float scale = Clamp(1.0f / distance, 0.001f, 0.4f);
-	float fixedSize = 0.2f;
-
-	s_Coin->size.x = fixedSize * scale * s_Camera->fovy;
-	s_Coin->size.y = fixedSize * scale * s_Camera->fovy;
-	s_Coin->size.z = fixedSize * scale * s_Camera->fovy;
-
 	s_Coin->position.z += 10.0f * s_DeltaTime;
 
-	if (s_Coin->position.z > 16) {
+	if (s_Coin->position.z > 20) {
 		s_Coin->position.z = -20.0f;
 		s_PlayerScore++;
 	}
-	
+
+	std::cout << "Coin: " << s_Coin->position.z << "\n";
+	if (s_Player->getPosition().z <= s_Coin->position.z) {
+		std::cout << "hit\n";
+	}
+
+	if (IsKeyPressed(KEY_A)) {
+		s_Player->setMovement(Inputs::Left, true);
+	}
+	if (IsKeyPressed(KEY_D)) {
+		s_Player->setMovement(Inputs::Right, true);
+	}
+	if (IsKeyDown(KEY_SPACE)) {
+		s_Player->setMovement(Inputs::Jump, true);
+	}
 	// std::cout << s_Coin->position.z << ", " << s_Player->getPosition().z << "\n";
 }
 

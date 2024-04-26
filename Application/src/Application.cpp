@@ -48,9 +48,9 @@ void Application::run() {
 }
 
 void Application::init() {
-	SetConfigFlags(FLAG_VSYNC_HINT);
 	InitWindow(m_Width, m_Height, m_Title.c_str());
 	SetTraceLogLevel(LOG_WARNING);
+	SetTargetFPS(30);
 
 	MotionDetection::Init();
 	Game::Init();
