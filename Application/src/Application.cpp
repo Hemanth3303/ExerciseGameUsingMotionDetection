@@ -38,8 +38,8 @@ void Application::run() {
 			WHITE
 		);
 
-		DrawLine(videoWidth / 2, winHeight / 2, m_MotionBodyCenter.x, m_MotionBodyCenter.y, GREEN);
-		DrawCircle(videoWidth / 2, winHeight / 2, 10, RED);
+		DrawLineV(m_ReferenceCenter, m_MotionBodyCenter, GREEN);
+		DrawCircleV(m_ReferenceCenter, 10, RED);
 		DrawCircleV(m_MotionBodyCenter, 10, BLUE);
 		
 		EndDrawing();
@@ -55,7 +55,8 @@ void Application::init() {
 	MotionDetection::Init();
 	Game::Init();
 
-	m_MotionBodyCenter = Vector2(videoWidth / 2, winHeight / 2);
+	m_MotionBodyCenter = Vector2(videoWidth / 2.0f, winHeight / 2.0f);
+	m_ReferenceCenter = Vector2(videoWidth / 2.0f, winHeight / 2.0f);
 }
 
 void Application::deinit() {

@@ -23,4 +23,5 @@ private:
 	Texture m_VideoTexture{};
 	Texture m_GameTexture{};
 	Vector2 m_MotionBodyCenter{};
+	Vector2 m_ReferenceCenter{};
 };

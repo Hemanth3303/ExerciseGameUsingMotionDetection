@@ -60,5 +60,5 @@ void MotionDetection::Run() {
 	}
 
 
-	cv::imshow("s_ProcessingFrame", s_ProcessingFrame);
+	// cv::imshow("s_ProcessingFrame", s_ProcessingFrame);
 }
