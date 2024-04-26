@@ -37,15 +37,12 @@ void Game::Update() {
 
 	s_Coin->position.z += 10.0f * s_DeltaTime;
 
-	if (s_Coin->position.z > 20) {
+	if (s_Coin->position.z > 16) {
 		s_Coin->position.z = -20.0f;
 		s_PlayerScore++;
 	}
+	std::cout << "Coin: " << s_Coin->position << "\n";
 
-	std::cout << "Coin: " << s_Coin->position.z << "\n";
-	if (s_Player->getPosition().z <= s_Coin->position.z) {
-		std::cout << "hit\n";
-	}
 
 	if (IsKeyPressed(KEY_A)) {
 		s_Player->setMovement(Inputs::Left, true);

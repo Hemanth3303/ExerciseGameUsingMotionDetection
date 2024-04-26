@@ -7,6 +7,8 @@
 #include <raylib.h>
 #include <raymath.h>
 
+#include "Utils.hpp"
+
 #include <cstdint>
 #include <string>
 #include <memory>

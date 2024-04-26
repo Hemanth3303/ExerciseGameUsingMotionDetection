@@ -33,3 +33,18 @@ const Vector2 Utils::GetMotionCenter() {
 		MotionDetection::GetMotionCenter().y * winHeight / sizeOfFrame.height
 	);
 }
+
+std::ostream& operator<<(std::ostream& stream, const Vector2& vec2) {
+	stream << "[X: " << vec2.x << ", Y: " << vec2.y << "]\n";
+	return stream;
+}
+
+std::ostream& operator<<(std::ostream& stream, const Vector3& vec3) {
+	stream << "[X: " << vec3.x << ", Y: " << vec3.y << ", Z: " << vec3.z << "]\n";
+	return stream;
+}
+
+std::ostream& operator<<(std::ostream& stream, const Vector4& vec4) {
+	stream << "[X: " << vec4.x << ", Y: " << vec4.y << ", Z: " << vec4.z << ", W: " << vec4.w << "]\n";
+	return stream;
+}
