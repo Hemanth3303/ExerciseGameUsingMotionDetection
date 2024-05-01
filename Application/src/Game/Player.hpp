@@ -25,6 +25,7 @@ public:
 	inline const Color& getColor() const { return m_GameObject.color; }
 
 	inline void setMovement(Inputs input, bool value) { m_MovementInputs[static_cast<std::int32_t>(input)] = value; }
+	inline void centerize() { m_GameObject.position.x = 0.0f; }
 private:
 	inline bool shouldMove(Inputs input) { return m_MovementInputs[static_cast<std::int32_t>(input)]; }
 private:

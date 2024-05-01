@@ -27,10 +27,10 @@ void Player::update(const float deltaTime) {
 
 	// left-right movement
 	if(shouldMove(Inputs::Left) && m_GameObject.position.x>leftLanePos) {
-		m_GameObject.position.x -= 10.0f;
+		m_GameObject.position.x = -10.0f;
 	}
 	if (shouldMove(Inputs::Right) && m_GameObject.position.x < rightLanePos) {
-		m_GameObject.position.x += 10.0f;
+		m_GameObject.position.x = 10.0f;
 	}
 
 	for (bool& input : m_MovementInputs) {

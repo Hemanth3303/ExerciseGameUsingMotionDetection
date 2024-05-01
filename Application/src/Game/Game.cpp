@@ -40,10 +40,20 @@ void Game::Update() {
 
 	for (GameObject& coin : s_Coins) {
 		coin.position.z += 10.0f * s_DeltaTime;
+	}
 
-		if (coin.position.z > 16) {
-			coin.position.z = -20.0f;
+	for (std::size_t i = 0; i < s_Coins.size(); i++) {
+		if (s_Coins[i].position.z > 30) {
+			s_Coins.erase(s_Coins.begin() + i);
+			break;
+		}
+
+		if ((s_Coins[i].position.z > 16) &&
+			(s_Player->getPosition().y >= 8) &&
+			(s_Coins[i].position.x == s_Player->getPosition().x)) {
+			s_Coins.erase(s_Coins.begin() + i);
 			s_PlayerScore++;
+			break;
 		}
 	}
 
@@ -84,14 +94,15 @@ void Game::ControlPlayerMovement(const Vector2& referenceCenter, const Vector2& 
 		//std::cout << "[RIGHT]\n";
 	}
 	else {
+		s_Player->centerize();
 		//std::cout << "[CENTER]\n";
 	}
 
-	if (dy < -40.0f) {
+	if (dy < -45.0f) {
 		s_Player->setMovement(Inputs::Jump, true);
 		//std::cout << "[JUMP]\n";
 	}
 
 	//std::cout << "DiffX: " << dx << "\n";
-	std::cout << "DiffY: " << dy << "\n";
+	//std::cout << "DiffY: " << dy << "\n";
 }
