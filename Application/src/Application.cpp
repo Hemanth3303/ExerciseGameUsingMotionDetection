@@ -41,6 +41,8 @@ void Application::run() {
 		DrawLineV(m_ReferenceCenter, m_MotionBodyCenter, GREEN);
 		DrawCircleV(m_ReferenceCenter, 10, RED);
 		DrawCircleV(m_MotionBodyCenter, 10, BLUE);
+
+		Game::ControlPlayerMovement(m_ReferenceCenter, m_MotionBodyCenter);
 		
 		EndDrawing();
 		UnloadTexture(m_VideoTexture);
@@ -56,7 +58,7 @@ void Application::init() {
 	Game::Init();
 
 	m_MotionBodyCenter = Vector2(videoWidth / 2.0f, winHeight / 2.0f);
-	m_ReferenceCenter = Vector2(videoWidth / 2.0f, winHeight / 2.0f);
+	m_ReferenceCenter = Vector2(videoWidth / 2.0f, winHeight / 2.0f + 50.0f);
 }
 
 void Application::deinit() {
