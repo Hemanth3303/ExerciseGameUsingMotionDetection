@@ -25,6 +25,9 @@ public:
 
 	inline static const Texture& GetGameTexture() { return s_GameTexture.texture; }
 private:
+	static bool PlayerCoinCollision(const GameObject& coin);
+	static void ManageCoinSpawn();
+private:
 	static float s_DeltaTime;
 	static std::shared_ptr<Camera3D> s_Camera;
 	static std::shared_ptr<Player> s_Player;

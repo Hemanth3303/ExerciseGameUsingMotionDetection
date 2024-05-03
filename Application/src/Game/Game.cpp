@@ -23,10 +23,6 @@ void Game::Init() {
 	s_Camera->fovy = 60.0f;
 	s_Camera->projection = CAMERA_PERSPECTIVE;
 	s_Camera->up = { 0.0f, 1.0f, 0.0f };
-
-	for (std::int32_t i = 0; i < 10; i++) {
-		s_Coins.emplace_back(Vector3(0.0f, 12.0f, -20.0f - (i * 10)), Vector3(0.25f, 0.25f, 0.25f), GOLD);
-	}
 }
 
 void Game::Deinit() {
@@ -35,6 +31,8 @@ void Game::Deinit() {
 
 void Game::Update() {
 	s_DeltaTime = GetFrameTime();
+
+	ManageCoinSpawn();
 	UpdateCameraPro(s_Camera.get(), Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), 0.0f);
 	s_Player->update(s_DeltaTime);
 
@@ -48,9 +46,7 @@ void Game::Update() {
 			break;
 		}
 
-		if ((s_Coins[i].position.z > 16) &&
-			(s_Player->getPosition().y >= 8) &&
-			(s_Coins[i].position.x == s_Player->getPosition().x)) {
+		if (PlayerCoinCollision(s_Coins[i])) {
 			s_Coins.erase(s_Coins.begin() + i);
 			s_PlayerScore++;
 			break;
@@ -82,6 +78,20 @@ void Game::Render() {
 }
 
 void Game::ControlPlayerMovement(const Vector2& referenceCenter, const Vector2& motionbodyCenter) {
+
+	/*if (IsKeyPressed(KEY_A)) {
+		s_Player->setMovement(Inputs::Left, true);
+	}
+	if (IsKeyPressed(KEY_D)) {
+		s_Player->setMovement(Inputs::Right, true);
+	}
+	if (IsKeyPressed(KEY_S)) {
+		s_Player->centerize();
+	}
+	if (IsKeyPressed(KEY_SPACE)) {
+		s_Player->setMovement(Inputs::Jump, true);
+	}*/
+
 	float dx = motionbodyCenter.x - referenceCenter.x;
 	float dy = motionbodyCenter.y - referenceCenter.y;
 	
@@ -105,4 +115,42 @@ void Game::ControlPlayerMovement(const Vector2& referenceCenter, const Vector2& 
 
 	//std::cout << "DiffX: " << dx << "\n";
 	//std::cout << "DiffY: " << dy << "\n";
+}
+
+bool Game::PlayerCoinCollision(const GameObject& coin) {
+	const Vector3& playerPos = s_Player->getPosition();
+	if (playerPos.y >= 8) {
+		if ((coin.position.x <= -2.7f) && (playerPos.x <= -10.0f)) {
+			if (coin.position.z > 14) {
+				return true;
+			}
+		}
+		else if (coin.position.x == 0.0f && playerPos.x == 0.0f) {
+			if (coin.position.z > 16) {
+				return true;
+			}
+		}
+		else if (coin.position.x >= 2.7 && playerPos.x >= 10.0f) {
+			if (coin.position.z > 14) {
+				return true;
+			}
+		}
+	}
+		
+	return false;
+}
+
+void Game::ManageCoinSpawn() {
+	static float spawnTimer = 0.0f;
+	constexpr static float threshold = 2.0f;
+
+	spawnTimer += s_DeltaTime;
+
+	if (spawnTimer > threshold) {
+		spawnTimer = 0.0f;
+		float coinXPos = GetRandomValue(-1, 1) * 2.7;
+		for (std::int32_t i = 0; i < GetRandomValue(5, 10); i++) {
+			s_Coins.emplace_back(Vector3(coinXPos, 12.0f, -20.0f - (i * 2.0f)), Vector3(0.25f, 0.25f, 0.25f), GOLD);
+		}
+	}
 }
