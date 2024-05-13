@@ -126,7 +126,7 @@ bool Game::PlayerCoinCollision(const GameObject& coin) {
 			}
 		}
 		else if (coin.position.x == 0.0f && playerPos.x == 0.0f) {
-			if (coin.position.z > 16) {
+			if (coin.position.z > 8) {
 				return true;
 			}
 		}
