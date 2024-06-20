@@ -31,28 +31,23 @@ void Game::Deinit() {
 
 void Game::Update() {
 	s_DeltaTime = GetFrameTime();
-
 	ManageCoinSpawn();
 	UpdateCameraPro(s_Camera.get(), Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), 0.0f);
 	s_Player->update(s_DeltaTime);
-
 	for (GameObject& coin : s_Coins) {
 		coin.position.z += 10.0f * s_DeltaTime;
 	}
-
 	for (std::size_t i = 0; i < s_Coins.size(); i++) {
 		if (s_Coins[i].position.z > 30) {
 			s_Coins.erase(s_Coins.begin() + i);
 			break;
 		}
-
 		if (PlayerCoinCollision(s_Coins[i])) {
 			s_Coins.erase(s_Coins.begin() + i);
 			s_PlayerScore++;
 			break;
 		}
 	}
-
 }
 
 void Game::Render() {
@@ -79,27 +74,17 @@ void Game::Render() {
 
 void Game::ControlPlayerMovement(const Vector2& referenceCenter, const Vector2& motionbodyCenter) {
 
-	/*if (IsKeyPressed(KEY_A)) {
-		s_Player->setMovement(Inputs::Left, true);
-	}
-	if (IsKeyPressed(KEY_D)) {
-		s_Player->setMovement(Inputs::Right, true);
-	}
-	if (IsKeyPressed(KEY_S)) {
-		s_Player->centerize();
-	}
-	if (IsKeyPressed(KEY_SPACE)) {
-		s_Player->setMovement(Inputs::Jump, true);
-	}*/
-
 	float dx = motionbodyCenter.x - referenceCenter.x;
 	float dy = motionbodyCenter.y - referenceCenter.y;
+
+	const float xThreshold = 80.0f;
+	const float yThreshold = 45.0f;
 	
-	if (dx < -100.0f) {
+	if (dx < -xThreshold) {
 		s_Player->setMovement(Inputs::Left, true);
 		//std::cout << "[LEFT]\n";
 	}
-	else if (dx > 100.0f) {
+	else if (dx > xThreshold) {
 		s_Player->setMovement(Inputs::Right, true);
 		//std::cout << "[RIGHT]\n";
 	}
@@ -108,7 +93,7 @@ void Game::ControlPlayerMovement(const Vector2& referenceCenter, const Vector2& 
 		//std::cout << "[CENTER]\n";
 	}
 
-	if (dy < -45.0f) {
+	if (dy < -yThreshold) {
 		s_Player->setMovement(Inputs::Jump, true);
 		//std::cout << "[JUMP]\n";
 	}
