@@ -1,0 +1,9 @@
+{
+  "name": "exercisegameusingmotiondetection",
+  "description": "An exercise game using motion detection made for college mini project",
+  "homepage": "https://github.com/Hemanth3303/ExerciseGameUsingMotionDetection",
+  "dependencies": [
+    "raylib",
+    "opencv"
+  ]
+}

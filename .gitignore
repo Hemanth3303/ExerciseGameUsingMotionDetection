@@ -63,6 +63,9 @@ CMakeDoxygenDefaults.cmake
 cmake_install.cmake
 cmake_uninstall.cmake
 
+# vcpkg
+vcpkg_installed/
+
 # Ninja generator
 build.ninja
 rules.ninja

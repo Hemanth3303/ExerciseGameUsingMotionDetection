@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26)
-
+include(cmake/print.cmake)
 project(ExerciseGameUsingMotionDetection LANGUAGES C CXX)
 
 # Set the available build configurations
@@ -19,6 +19,8 @@ endif()
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/$<0:>")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/$<0:>")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/$<0:>")
+
+set(OpenCV_DIR "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/share/opencv4")
 
 find_package(OpenCV CONFIG REQUIRED)
 find_package(raylib CONFIG REQUIRED)

@@ -29,10 +29,12 @@
 git clone https://github.com/Hemanth3303/ExerciseGameUsingMotionDetection.git
 ```
 * Use vcpkg to install the dependencies
+* Note: this will take a while due to building opencv and its dependecies
 ```shell
-vcpkg install raylib opencv
+vcpkg install
 ```
 * In the root of the project, run cmake with preferred preset
+* For example, for debug build on window x86-64
 ```shell
 cmake -S . -B build --preset=windows_x86-64_debug
 ```
